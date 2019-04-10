@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>Task 2</title>
+  </head>
+  <body>
+    <input id="x0" type="text"/>
+    <input id="y0" type="text"/>
+    <input id="z0" type="text"/>
+    
+    <input id="x1" type="text"/>
+    <input id="y1" type="text"/>
+    <input id="z1" type="text"/>
+    
+    <input id="x2" type="text"/>
+    <input id="y2" type="text"/>
+    <input id="z2" type="text"/>
+    
+    <script src="vec3.js"></script>
+    <script>
+      var x0, y0, z0; // (input vertex 0)
+      var x1, y1, z1; // (input vertex 1)
+      var x2, y2, z2; // (input vertex 2)
+      var v0 = new Vec3( x0, y0, z0 );
+      var v1 = new Vec3( x1, y1, z1 );
+      var v2 = new Vec3( x2, y2, z2 );
+      var S = AreaOfTriangle( v0, v1, v2 ); // (output value)
+    </script>
+  </body>
+</html>
