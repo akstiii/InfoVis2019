@@ -31,3 +31,17 @@ Vec3.prototype.mid = function() {
     temp.sort();
     return temp[1];
 }
+
+Vec3.prototype.dis = function(v) {
+	var xd = this.x - v.x;
+	var yd = this.y - v.y;
+	var zd = this.z - v.z;
+	var sum = Math.pow(xd, 2) + Math.pow(yd, 2) + Math.pow(zd, 2);
+	return Math.sqrt(sum);
+}
+
+function AreaOfTriangle(v0, v1, v2) {
+	var v01 = v0.dis(v1);
+	var v02 = v0.dis(v2);
+	return 0.5*Math.abs(v01*v02);
+}

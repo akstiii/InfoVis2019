@@ -1,0 +1,66 @@
+<html>
+  <head>
+    <title>Task 2</title>
+  </head>
+  <body>
+	<p>
+	<label for="x0">x0:</label>
+	<input name="x0" id="x0" type="number" step="any"/>
+
+	<label for="y0">y0:</label>
+    <input name="y0" id="y0" type="number" step="any"/>
+
+	<label for="z0">z0:</label>
+    <input name="z0" id="z0" type="number" step="any"/>
+	</p>
+
+	<p>
+	<label for="x1">x1:</label>
+    <input name="x1" id="x1" type="number" step="any"/>
+
+	<label for="y1">y1:</label>
+    <input name="y1" id="y1" type="number" step="any"/>
+
+	<label for="z1">z1:</label>
+    <input name="z1" id="z1" type="number" step="any"/>
+	</p>
+
+	<p>
+	<label for="x2">x2:</label>
+    <input name="x2" id="x2" type="number" step="any"/>
+
+	<label for="y2">y2:</label>
+    <input name="y2" id="y2" type="number" step="any"/>
+
+	<label for="z2">z2:</label>
+    <input name="z2" id="z2" type="number" step="any"/>
+	</p>
+
+	<p>
+	<input name="calc" id="calc" type="button" value="Calculate area" onclick="calc()">
+	</p>
+
+	<p>
+	<label for="result">Result:</label>
+	<span name="result" id="result">N/A</span>
+	</p>
+    
+    <script src="vec3.js"></script>
+    <script>
+		function getFloatValue(id) {
+			return parseFloat(document.getElementById(id).value);
+		}
+		function calc() {
+			var x0 = getFloatValue("x0"), y0 = getFloatValue("y0"), z0 = getFloatValue("z0"); // (input vertex 0)
+			var x1 = getFloatValue("x1"), y1 = getFloatValue("y1"), z1 = getFloatValue("z1"); // (input vertex 1)
+			var x2 = getFloatValue("x2"), y2 = getFloatValue("y2"), z2 = getFloatValue("z2"); // (input vertex 2)
+			var v0 = new Vec3( x0, y0, z0 );
+			var v1 = new Vec3( x1, y1, z1 );
+			var v2 = new Vec3( x2, y2, z2 );
+			
+			var S = AreaOfTriangle( v0, v1, v2 ); // (output value)
+			document.getElementById("result").innerHTML = S;
+		}
+    </script>
+  </body>
+</html>
