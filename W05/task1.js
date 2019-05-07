@@ -17,45 +17,7 @@ function main()
     renderer.setSize( width, height );
     document.body.appendChild( renderer.domElement );
 
-    var vertices = [
-                     [
-                       [1, 1, 0]
-                       [-1, 1, 0],
-                       [1, -1, 0],
-                       [-1, -1, 0]
-                     ],
-                     [
-                       [1, 1, 0]
-                       [-1, 1, 0],
-                       [1, -1, 0],
-                       [-1, -1, 0]
-                     ],
-                     [
-                       [1, 1, 0]
-                       [-1, 1, 0],
-                       [1, -1, 0],
-                       [-1, -1, 0]
-                     ],
-                     [
-                       [1, 1, 0]
-                       [-1, 1, 0],
-                       [1, -1, 0],
-                       [-1, -1, 0]
-                     ]
-                   ];
-    var faces = [[0, 1, 2]];
 
-    var v0 = new THREE.Vector3().fromArray(vertices[0]);
-    var v1 = new THREE.Vector3().fromArray(vertices[1]);
-    var v2 = new THREE.Vector3().fromArray(vertices[2]);
-    var id = faces[0];
-    var f0 = new THREE.Face3(id[0], id[1], id[2]);
-
-    var geometry = new THREE.Geometry();
-    geometry.vertices.push(v0);
-    geometry.vertices.push(v1);
-    geometry.vertices.push(v2);
-    geometry.faces.push(f0);
 
     var material = new THREE.MeshBasicMaterial();
     material.vertexColors = THREE.FaceColors;
@@ -75,12 +37,59 @@ function main()
     scene.add(cube);
 
     loop();
+}
 
-    function loop()
-    {
-        requestAnimationFrame( loop );
-        cube.rotation.x += 0.01;
-        cube.rotation.y += 0.01;
-        renderer.render( scene, camera );
-    }
+function createCube(xs, ys, zs, len) {
+  var vertices = [
+                     [xs, ys+len, zs]
+                     [xs, ys, zs],
+                     [xs+len, ys, zs],
+                     [xs+len, ys+len, zs],
+
+                     [xs, ys+len, zs + len]
+                     [xs, ys, zs + len],
+                     [xs+len, ys, zs + len],
+                     [xs+len, ys+len, zs + len]
+                 ];
+  var faces = [[0, 1, 2],
+               [2, 3, 0],
+
+               [2, 3, 0],
+               [2, 3, 0],
+
+               [2, 3, 0],
+               [2, 3, 0],
+
+               [2, 3, 0],
+               [2, 3, 0],
+
+               [2, 3, 0],
+               [2, 3, 0],
+
+               [2, 3, 0],
+               [2, 3, 0]];
+
+  var v0 = new THREE.Vector3().fromArray(vertices[0]);
+  var v1 = new THREE.Vector3().fromArray(vertices[1]);
+  var v2 = new THREE.Vector3().fromArray(vertices[2]);
+  var v3 = new THREE.Vector3().fromArray(vertices[3]);
+
+  var geometry = new THREE.Geometry();
+  geometry.vertices.push(v0);
+  geometry.vertices.push(v1);
+  geometry.vertices.push(v2);
+  geometry.vertices.push(v3);
+
+  faces.forEach(function(id) {
+    var f = new THREE.Face3(id[0], id[1], id[2]);
+    geometry.faces.push(f);
+  });
+}
+
+function loop()
+{
+    requestAnimationFrame(loop);
+    cube.rotation.x += 0.01;
+    cube.rotation.y += 0.01;
+    renderer.render(scene, camera);
 }
