@@ -1,11 +1,25 @@
 <html>
   <head>
-	   <title>W06: Task 01</title>
+	   <title>W06: Task 03</title>
   </head>
   <body>
   	<script src="https://threejs.org/build/three.min.js"></script>
 
-    <script type="x-shader/x-vertex" id="gouraud.vert">
+    <script type="x-shader/x-vertex" id="phong.vert">
+      varying vec3 point_color;
+      varying vec4 point_position;
+      varying vec3 normal_vector;
+      uniform vec3 light_position;
+
+      void main() {
+        point_color = color;
+        point_position = modelViewMatrix * vec4( position, 1.0 );
+        normal_vector = normalMatrix * normal;
+        gl_Position = projectionMatrix * point_position;
+      }
+    </script>
+
+    <script type="x-shader/x-fragment" id="phong.frag">
       varying vec3 point_color;
       varying vec4 point_position;
       varying vec3 normal_vector;
@@ -40,25 +54,15 @@
       }
 
       void main() {
-        point_position = modelViewMatrix * vec4(position, 1.0);
-        normal_vector = normalMatrix * normal;
-
-        vec3 C = color;
-        vec3 L = normalize(light_position - point_position.xyz);
-        vec3 N = normalize(normal_vector);
-        point_color = PhongReflection(C, L, N);
-        gl_Position = projectionMatrix * point_position;
+        vec3 C = point_color;
+        vec3 L = normalize( light_position - point_position.xyz );
+        vec3 N = normalize( normal_vector );
+        vec3 shaded_color = PhongReflection( C, L, N );
+        gl_FragColor = vec4( shaded_color, 1.0 );
       }
     </script>
 
-    <script type="x-shader/x-fragment" id="gouraud.frag">
-      varying vec3 point_color;
-      void main() {
-        gl_FragColor = vec4( point_color, 1.0 );
-      }
-    </script>
-
-    <script src="task1.js"></script>
+    <script src="task3.js"></script>
 
     <script>
       main();
