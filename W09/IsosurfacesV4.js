@@ -1,7 +1,14 @@
-function Isosurfaces( volume, isovalue )
+function Isosurfaces( volume, isovalue, light )
 {
     var geometry = new THREE.Geometry();
-    var material = new THREE.MeshLambertMaterial();
+    var material = new THREE.ShaderMaterial({
+        vertexColors: THREE.VertexColors,
+        vertexShader: document.getElementById('phong.vert').text,
+        fragmentShader: document.getElementById('phong.frag').text,
+        uniforms: {
+          light_position: { type: 'v3', value: light.position }
+        }
+    });
 
     var smin = volume.min_value;
     var smax = volume.max_value;
@@ -52,7 +59,12 @@ function Isosurfaces( volume, isovalue )
                     var id0 = counter++;
                     var id1 = counter++;
                     var id2 = counter++;
-                    geometry.faces.push( new THREE.Face3( id0, id1, id2 ) );
+
+                    var f = new THREE.Face3( id0, id1, id2 );
+                    var color = new THREE.Color( "red" );
+                    f.vertexColors = [ color, color, color ]
+
+                    geometry.faces.push( f );
                 }
             }
             cell_index++;
@@ -61,8 +73,6 @@ function Isosurfaces( volume, isovalue )
     }
 
     geometry.computeVertexNormals();
-
-    material.color = new THREE.Color( "red" );
 
     return new THREE.Mesh( geometry, material );
 
@@ -129,4 +139,24 @@ function Isosurfaces( volume, isovalue )
           return x + y * nlines + z * nslices;
       }
     }
+}
+
+function createColorMap() {
+  var cmap = [];
+  for ( var i = 0; i < 256; i++)
+  {
+      var S = i / 255.0;
+      var R = 1.0;
+      var G = 1.0 - S;
+      var B = 1.0 - S;
+      var color = new THREE.Color( R, G, B );
+      cmap.push( [S, '0x' + color.getHexString() ] );
+  }
+
+  // Draw color map
+  var lut = new THREE.Lut( 'rainbow', cmap.length );
+  lut.addColorMap( 'mycolormap', cmap );
+  lut.changeColorMap( 'mycolormap' );
+
+  return lut;
 }
