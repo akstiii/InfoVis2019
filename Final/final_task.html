@@ -1,25 +1,261 @@
 <html>
   <head>
     <title>InfoVis2019: Final task</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="custom.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
-  <body style="margin:0">
-    <div id="display" style="width: 80%; float: left;"></div>
-    <div id="controller" style="width: 20%; float:left;">
-      <label id="label" style="font-family:Arial;"></label>
-      <input type="range" min="0" max="1" step="0.01" value="0.5" id="isovalue"/>
-      <button id="change-isovalue-button" style="font-family=Arial;">Apply</button>
+  <body style="font-family: "Times New Roman", Times, serif;">
+    <div class="container">
+      <h1 class="text-center">Final Task</h1>
+      <h2>Isosurfaces</h2>
+      <div class="row">
+        <div>
+          <div class="col-12 col-sm-6 col-md-4 float-right">
+            <div id="display1"></div>
+            <div id="controller1">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Isovalue</span>
+                </div>
+                <input id="isovalue1" type="range" class="form-control custom-range" min="0" max="255" value="128"/>
+                <span id="isovalue1S" class="input-group-text"></span>
+              </div>
+            </div>
+          </div>
+          <p class="text-justify">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed magna mauris. Pellentesque eu luctus ex. Praesent sapien lectus, elementum ac mattis sodales, finibus at eros. Quisque lectus lorem, placerat id cursus at, dapibus vel justo. Etiam lacinia dolor nibh, eget accumsan dui imperdiet et. Nam lobortis metus eget nisl pharetra venenatis. In euismod neque vel lorem varius, a lacinia odio mattis. Aenean pharetra tellus velit, dictum bibendum ante aliquam facilisis. Proin condimentum, lorem vel dapibus pretium, purus libero sodales arcu, quis efficitur magna arcu in libero. Morbi purus est, hendrerit eget ipsum a, viverra consequat turpis.
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <div class="col-12 col-sm-6 col-md-4 float-right">
+            <div id="display3"></div>
+            <div id="controller3">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" style="width: 10ch">Point.X</span>
+                </div>
+                <input id="X3" type="range" class="form-control custom-range" value="0"/>
+                <span id="X3s" class="input-group-text" style="width: 5ch"></span>
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" style="width: 10ch">Point.Y</span>
+                </div>
+                <input id="Y3" type="range" class="form-control custom-range" value="0" data-toggle="tooltip" data-placement="top"/>
+                <span id="Y3s" class="input-group-text" style="width: 5ch"></span>
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" style="width: 10ch">Point.Z</span>
+                </div>
+                <input id="Z3" type="range" class="form-control custom-range" value="12" data-toggle="tooltip" data-placement="top"/>
+                <span id="Z3s" class="input-group-text" style="width: 5ch"></span>
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" style="width: 10ch">Normal.X</span>
+                </div>
+                <input id="nX3" type="range" class="form-control custom-range" step="0.1" value="0" data-toggle="tooltip" data-placement="top"/>
+                <span id="nX3s" class="input-group-text" style="width: 5ch"></span>
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" style="width: 10ch">Normal.Y</span>
+                </div>
+                <input id="nY3" type="range" class="form-control custom-range" step="0.1" value="0" data-toggle="tooltip" data-placement="top"/>
+                <span id="nY3s" class="input-group-text" style="width: 5ch"></span>
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" style="width: 10ch">Normal.Z</span>
+                </div>
+                <input id="nZ3" type="range" class="form-control custom-range" step="0.1" value="1" data-toggle="tooltip" data-placement="top"/>
+                <span id="nZ3s" class="input-group-text" style="width: 5ch"></span>
+              </div>
+              <button id="applyCoords3" type="button" class="btn btn-primary">Apply</button>
+            </div>
+          </div>
+          <p class="text-justify">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed magna mauris. Pellentesque eu luctus ex. Praesent sapien lectus, elementum ac mattis sodales, finibus at eros. Quisque lectus lorem, placerat id cursus at, dapibus vel justo. Etiam lacinia dolor nibh, eget accumsan dui imperdiet et. Nam lobortis metus eget nisl pharetra venenatis. In euismod neque vel lorem varius, a lacinia odio mattis. Aenean pharetra tellus velit, dictum bibendum ante aliquam facilisis. Proin condimentum, lorem vel dapibus pretium, purus libero sodales arcu, quis efficitur magna arcu in libero. Morbi purus est, hendrerit eget ipsum a, viverra consequat turpis.
+          </p>
+        </div>
+      </div>
+
+      <h2>Volume rendering</h2>
+      <div class="row">
+        <div>
+          <div class="col-12 col-sm-6 col-md-4 float-right">
+            <div id="display2"></div>
+            <div id="controller2">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Isovalue</span>
+                </div>
+                <input id="isovalue2" type="range" class="form-control custom-range" min="0" max="255" value="128"/>
+                <span id="isovalue2S" class="input-group-text"></span>
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Material</span>
+                </div>
+                <select id="material2" class="form-control">
+                  <option value="Basic">Basic</option>
+                  <option value="Lambert" selected="selected">Lambert</option>
+                  <option value="Phong">Phong</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <p class="text-justify">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed magna mauris. Pellentesque eu luctus ex. Praesent sapien lectus, elementum ac mattis sodales, finibus at eros. Quisque lectus lorem, placerat id cursus at, dapibus vel justo. Etiam lacinia dolor nibh, eget accumsan dui imperdiet et. Nam lobortis metus eget nisl pharetra venenatis. In euismod neque vel lorem varius, a lacinia odio mattis. Aenean pharetra tellus velit, dictum bibendum ante aliquam facilisis. Proin condimentum, lorem vel dapibus pretium, purus libero sodales arcu, quis efficitur magna arcu in libero. Morbi purus est, hendrerit eget ipsum a, viverra consequat turpis.
+          </p>
+        </div>
+      </div>
+
+      <h2>Streamline</h2>
+      <div class="row">
+        <div>
+          <div class="col-12 col-sm-6 col-md-4 float-right">
+            <div id="display4"></div>
+            <div id="controller4">
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-4 float-right">
+            <div id="display6"></div>
+            <div id="controller6">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" style="width: 10ch">X</span>
+                </div>
+                <input id="X6" type="range" class="form-control custom-range" value="0"/>
+                <span id="X6s" class="input-group-text" style="width: 5ch"></span>
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" style="width: 10ch">Y</span>
+                </div>
+                <input id="Y6" type="range" class="form-control custom-range" value="0" data-toggle="tooltip" data-placement="top"/>
+                <span id="Y6s" class="input-group-text" style="width: 5ch"></span>
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" style="width: 10ch">Z</span>
+                </div>
+                <input id="Z6" type="range" class="form-control custom-range" value="12" data-toggle="tooltip" data-placement="top"/>
+                <span id="Z6s" class="input-group-text" style="width: 5ch"></span>
+              </div>
+              <button id="addPoint6" type="button" class="btn btn-primary">Add point</button>
+              <button id="removePoints6" type="button" class="btn btn-primary">Remove points</button>
+            </div>
+          </div>
+          <p class="text-justify">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed magna mauris. Pellentesque eu luctus ex. Praesent sapien lectus, elementum ac mattis sodales, finibus at eros. Quisque lectus lorem, placerat id cursus at, dapibus vel justo. Etiam lacinia dolor nibh, eget accumsan dui imperdiet et. Nam lobortis metus eget nisl pharetra venenatis. In euismod neque vel lorem varius, a lacinia odio mattis. Aenean pharetra tellus velit, dictum bibendum ante aliquam facilisis. Proin condimentum, lorem vel dapibus pretium, purus libero sodales arcu, quis efficitur magna arcu in libero. Morbi purus est, hendrerit eget ipsum a, viverra consequat turpis.
+          </p>
+        </div>
+      </div>
+
+      <div class="row">
+
+      </div>
+
+      <h2>LIC</h2>
+      <div class="row">
+        <!--div>
+          <div class="col-12 col-sm-6 col-md-4 float-right">
+            <div id="display5"></div>
+            <div id="controller5">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" style="width: 10ch">Point.X</span>
+                </div>
+                <input id="X5" type="range" class="form-control custom-range" value="0"/>
+                <span id="X5s" class="input-group-text" style="width: 5ch"></span>
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" style="width: 10ch">Point.Y</span>
+                </div>
+                <input id="Y5" type="range" class="form-control custom-range" value="0" data-toggle="tooltip" data-placement="top"/>
+                <span id="Y5s" class="input-group-text" style="width: 5ch"></span>
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" style="width: 10ch">Point.Z</span>
+                </div>
+                <input id="Z5" type="range" class="form-control custom-range" value="12" data-toggle="tooltip" data-placement="top"/>
+                <span id="Z5s" class="input-group-text" style="width: 5ch"></span>
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" style="width: 10ch">Normal.X</span>
+                </div>
+                <input id="nX5" type="range" class="form-control custom-range" step="0.1" value="0" data-toggle="tooltip" data-placement="top"/>
+                <span id="nX5s" class="input-group-text" style="width: 5ch"></span>
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" style="width: 10ch">Normal.Y</span>
+                </div>
+                <input id="nY5" type="range" class="form-control custom-range" step="0.1" value="0" data-toggle="tooltip" data-placement="top"/>
+                <span id="nY5s" class="input-group-text" style="width: 5ch"></span>
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" style="width: 10ch">Normal.Z</span>
+                </div>
+                <input id="nZ5" type="range" class="form-control custom-range" step="0.1" value="1" data-toggle="tooltip" data-placement="top"/>
+                <span id="nZ5s" class="input-group-text" style="width: 5ch"></span>
+              </div>
+              <button id="applyCoords5" type="button" class="btn btn-primary">Apply</button>
+            </div>
+          </div>
+          <p class="text-justify">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed magna mauris. Pellentesque eu luctus ex. Praesent sapien lectus, elementum ac mattis sodales, finibus at eros. Quisque lectus lorem, placerat id cursus at, dapibus vel justo. Etiam lacinia dolor nibh, eget accumsan dui imperdiet et. Nam lobortis metus eget nisl pharetra venenatis. In euismod neque vel lorem varius, a lacinia odio mattis. Aenean pharetra tellus velit, dictum bibendum ante aliquam facilisis. Proin condimentum, lorem vel dapibus pretium, purus libero sodales arcu, quis efficitur magna arcu in libero. Morbi purus est, hendrerit eget ipsum a, viverra consequat turpis.
+          </p>
+        </div-->
+      </div>
+
+      <h2>Summary</h2>
+      <div class="row">
+      </div>
+
     </div>
 
     <script src="three.min.js"></script>
     <script src="TrackballControls.js"></script>
     <script src="https://naohisas.github.io/KVS.js/Build/KVS.min.js"></script>
-    <script src="https://naohisas.github.io/KVS.js/Build/KVS2THREE.min.js"></script>
-  	<script src="https://naohisas.github.io/KVS.js/Source/KVSLobsterData.js"></script>
-  	<script src="Bounds.js"></script>
+    <!--script src="https://naohisas.github.io/KVS.js/Build/KVS2THREE.min.js"></script-->
+    <!--script src="KVS2THREE.js"></script-->
+    <script src="KVS2THREE.min.js"></script>
+    <script src="https://naohisas.github.io/KVS.js/Source/KVSLobsterData.js"></script>
+  	<script src="../Lut_old.js"></script>
+    <script src="Bounds.js"></script>
   	<script src="Isosurfaces.js"></script>
+  	<script src="Slice.js"></script>
+  	<script src="Streamline.js"></script>
+  	<script src="Arrows.js"></script>
     <script src="main.js"></script>
     <script>
       main();
+    </script>
+    <script>
+      $(document).ready(function() {
+        $(".form-control,.custom-range").on("input", function() {
+          var value = $(this).val();
+          $(this).next().html(value);
+        });
+        $(".form-control,.custom-range").each(function(i, obj) {
+          var value = $(this).val();
+          $(this).next().html(value);
+        });
+        $('[data-toggle="tooltip"]').tooltip();
+      });
     </script>
   </body>
 </html>

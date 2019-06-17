@@ -1,8 +1,8 @@
-function Isosurfaces( volume, isovalue, material, transfer_function )
+function Isosurfaces(volume, isovalue, material, transfer_function)
 {
     var geometry = new THREE.Geometry();
     if (typeof material === 'undefined') {
-      material = new THREE.MeshLambertMaterial();
+      material = new THREE.MeshBasicMaterial();
     }
     material.vertexColors = THREE.VertexColors;
     if (typeof transfer_function === 'undefined') {
@@ -118,22 +118,22 @@ function Isosurfaces( volume, isovalue, material, transfer_function )
         return index;
     }
 
-    function interpolated_vertex( v0, v1, s )
+    function interpolated_vertex(v0, v1, s)
     {
-      var id0 = index_of( v0.x, v0.y, v0.z );
-      var id1 = index_of( v1.x, v1.y, v1.z );
+      var id0 = index_of(v0.x, v0.y, v0.z);
+      var id1 = index_of(v1.x, v1.y, v1.z);
 
       var s0 = volume.values[id0];
       var s1 = volume.values[id1];
 
-      var a = ( s - s0 ) / ( s1 - s0 );
-      var x = KVS.Mix( v0.x, v1.x, a );
-      var y = KVS.Mix( v0.y, v1.y, a );
-      var z = KVS.Mix( v0.z, v1.z, a );
+      var a = (s - s0) / (s1 - s0);
+      var x = KVS.Mix(v0.x, v1.x, a);
+      var y = KVS.Mix(v0.y, v1.y, a);
+      var z = KVS.Mix(v0.z, v1.z, a);
 
       return new THREE.Vector3(x, y, z);
 
-      function index_of( x, y, z )
+      function index_of(x, y, z)
       {
           var nlines = volume.numberOfNodesPerLine();
           var nslices = volume.numberOfNodesPerSlice();
