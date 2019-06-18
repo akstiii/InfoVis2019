@@ -27,7 +27,7 @@
             </div>
           </div>
           <p class="text-justify">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed magna mauris. Pellentesque eu luctus ex. Praesent sapien lectus, elementum ac mattis sodales, finibus at eros. Quisque lectus lorem, placerat id cursus at, dapibus vel justo. Etiam lacinia dolor nibh, eget accumsan dui imperdiet et. Nam lobortis metus eget nisl pharetra venenatis. In euismod neque vel lorem varius, a lacinia odio mattis. Aenean pharetra tellus velit, dictum bibendum ante aliquam facilisis. Proin condimentum, lorem vel dapibus pretium, purus libero sodales arcu, quis efficitur magna arcu in libero. Morbi purus est, hendrerit eget ipsum a, viverra consequat turpis.
+            For visualizing Isosurface extracted from volume data I used Marching Cubes algorithm implemented which was implemented during class. In first canvas is barebone Isosurface extracted from Lobster data without any shading effects. Iso value can be adjusted by the slider, which works as threshold value for mesh construction. Values greater than iso value are included and others not, hence setting value too high will make details disappear and too low will also include some noise in the data to the mesh.
           </p>
         </div>
       </div>
@@ -82,7 +82,7 @@
             </div>
           </div>
           <p class="text-justify">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed magna mauris. Pellentesque eu luctus ex. Praesent sapien lectus, elementum ac mattis sodales, finibus at eros. Quisque lectus lorem, placerat id cursus at, dapibus vel justo. Etiam lacinia dolor nibh, eget accumsan dui imperdiet et. Nam lobortis metus eget nisl pharetra venenatis. In euismod neque vel lorem varius, a lacinia odio mattis. Aenean pharetra tellus velit, dictum bibendum ante aliquam facilisis. Proin condimentum, lorem vel dapibus pretium, purus libero sodales arcu, quis efficitur magna arcu in libero. Morbi purus est, hendrerit eget ipsum a, viverra consequat turpis.
+            For the next canvas I have modified the Isosurface implementation to extract slice planes. By adjusting Point and Normal parameter one can control point and angle (direction) where volume is sliced.
           </p>
         </div>
       </div>
@@ -113,7 +113,7 @@
             </div>
           </div>
           <p class="text-justify">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed magna mauris. Pellentesque eu luctus ex. Praesent sapien lectus, elementum ac mattis sodales, finibus at eros. Quisque lectus lorem, placerat id cursus at, dapibus vel justo. Etiam lacinia dolor nibh, eget accumsan dui imperdiet et. Nam lobortis metus eget nisl pharetra venenatis. In euismod neque vel lorem varius, a lacinia odio mattis. Aenean pharetra tellus velit, dictum bibendum ante aliquam facilisis. Proin condimentum, lorem vel dapibus pretium, purus libero sodales arcu, quis efficitur magna arcu in libero. Morbi purus est, hendrerit eget ipsum a, viverra consequat turpis.
+          With shading effects one can simulate lighting and reflection, to be able see the details of the surface these are necessary. I decided to use THREE.js packed Shaders: Basic, Lambert and Phong which can select via dropdown.
           </p>
         </div>
       </div>
@@ -152,77 +152,19 @@
               </div>
               <button id="addPoint6" type="button" class="btn btn-primary">Add point</button>
               <button id="removePoints6" type="button" class="btn btn-primary">Remove points</button>
+              <button id="seedPoints6" type="button" class="btn btn-primary">Reseed</button>
             </div>
           </div>
           <p class="text-justify">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed magna mauris. Pellentesque eu luctus ex. Praesent sapien lectus, elementum ac mattis sodales, finibus at eros. Quisque lectus lorem, placerat id cursus at, dapibus vel justo. Etiam lacinia dolor nibh, eget accumsan dui imperdiet et. Nam lobortis metus eget nisl pharetra venenatis. In euismod neque vel lorem varius, a lacinia odio mattis. Aenean pharetra tellus velit, dictum bibendum ante aliquam facilisis. Proin condimentum, lorem vel dapibus pretium, purus libero sodales arcu, quis efficitur magna arcu in libero. Morbi purus est, hendrerit eget ipsum a, viverra consequat turpis.
+            Streamlines are lines that describe the fluid flow and the data used to draw streamlines are vector fields that describe the movement at certain point in 2D/3D space. For streamlines I used RungeKutta4 integrator, 1500 steps and 0.6 step length. The integration is done first Forward and then Backward. For default seeds I used 38 points along Z axis, at center of X and Y axes. On the first canvas one can see the seed points used the create the streamlines on the other canvas. Adjusting X, Y, Z one can move the red point in the first canvas and add it as seed for streamline visualization.  One must apply seeds separately via “Reseed” as rendering the lines is quiet heavy operation at least with current settings.
+            I also investigated more sophisticated seeding algorithms. Such as “Farthest Point Seeding”, which uses Delaunay triangles for approximating possible seed points along initial streamline. However, I didn’t have time to implement it and most of the papers on seeding algorithms were in 3D space.
           </p>
         </div>
       </div>
 
-      <div class="row">
-
-      </div>
-
-      <h2>LIC</h2>
-      <div class="row">
-        <!--div>
-          <div class="col-12 col-sm-6 col-md-4 float-right">
-            <div id="display5"></div>
-            <div id="controller5">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" style="width: 10ch">Point.X</span>
-                </div>
-                <input id="X5" type="range" class="form-control custom-range" value="0"/>
-                <span id="X5s" class="input-group-text" style="width: 5ch"></span>
-              </div>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" style="width: 10ch">Point.Y</span>
-                </div>
-                <input id="Y5" type="range" class="form-control custom-range" value="0" data-toggle="tooltip" data-placement="top"/>
-                <span id="Y5s" class="input-group-text" style="width: 5ch"></span>
-              </div>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" style="width: 10ch">Point.Z</span>
-                </div>
-                <input id="Z5" type="range" class="form-control custom-range" value="12" data-toggle="tooltip" data-placement="top"/>
-                <span id="Z5s" class="input-group-text" style="width: 5ch"></span>
-              </div>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" style="width: 10ch">Normal.X</span>
-                </div>
-                <input id="nX5" type="range" class="form-control custom-range" step="0.1" value="0" data-toggle="tooltip" data-placement="top"/>
-                <span id="nX5s" class="input-group-text" style="width: 5ch"></span>
-              </div>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" style="width: 10ch">Normal.Y</span>
-                </div>
-                <input id="nY5" type="range" class="form-control custom-range" step="0.1" value="0" data-toggle="tooltip" data-placement="top"/>
-                <span id="nY5s" class="input-group-text" style="width: 5ch"></span>
-              </div>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" style="width: 10ch">Normal.Z</span>
-                </div>
-                <input id="nZ5" type="range" class="form-control custom-range" step="0.1" value="1" data-toggle="tooltip" data-placement="top"/>
-                <span id="nZ5s" class="input-group-text" style="width: 5ch"></span>
-              </div>
-              <button id="applyCoords5" type="button" class="btn btn-primary">Apply</button>
-            </div>
-          </div>
-          <p class="text-justify">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed magna mauris. Pellentesque eu luctus ex. Praesent sapien lectus, elementum ac mattis sodales, finibus at eros. Quisque lectus lorem, placerat id cursus at, dapibus vel justo. Etiam lacinia dolor nibh, eget accumsan dui imperdiet et. Nam lobortis metus eget nisl pharetra venenatis. In euismod neque vel lorem varius, a lacinia odio mattis. Aenean pharetra tellus velit, dictum bibendum ante aliquam facilisis. Proin condimentum, lorem vel dapibus pretium, purus libero sodales arcu, quis efficitur magna arcu in libero. Morbi purus est, hendrerit eget ipsum a, viverra consequat turpis.
-          </p>
-        </div-->
-      </div>
-
       <h2>Summary</h2>
       <div class="row">
+        I ended up using too much time on the visual aspects of report and optimizing the canvas rendering as the page got heavy with only few WebGLContexts. I managed to do the rendering of all canvas with only one context, but the page is still quite heavy.
       </div>
 
     </div>
@@ -233,6 +175,7 @@
     <!--script src="https://naohisas.github.io/KVS.js/Build/KVS2THREE.min.js"></script-->
     <!--script src="KVS2THREE.js"></script-->
     <script src="KVS2THREE.min.js"></script>
+    <script src="MultiSceneCanvas.js"></script>
     <script src="https://naohisas.github.io/KVS.js/Source/KVSLobsterData.js"></script>
   	<script src="../Lut_old.js"></script>
     <script src="Bounds.js"></script>

@@ -3,14 +3,18 @@ function main()
     var volume1 = new KVS.LobsterData();
 
     var options1 = {"displayName": "display1", "isovalue": "isovalue1"};
-    displayVolume(volume1, options1);
+    var s = start("Lobster1");
+    var screenInfo1 =  displayVolume(volume1, options1);
+    stop(s, "Lobster1");
 
     var options2 = {
       "displayName": "display2",
       "isovalue": "isovalue2",
       "material": "material2"
     };
-    displayVolume(volume1, options2);
+    var s = start("Lobster2");
+    var screenInfo2 = displayVolume(volume1, options2);
+    stop(s, "Lobster2");
 
     var options3 = {
       "displayName": "display3",
@@ -22,7 +26,9 @@ function main()
       "nZ": "nZ3",
       "apply": "applyCoords3"
     };
-    displaySlice(volume1, options3);
+    var s = start("Lobster3");
+    var screenInfo3 = displaySlice(volume1, options3);
+    stop(s, "Lobster3");
 
     var volume2 = new KVS.CreateTornadoData(64,64,64);
     var fov = 45;
@@ -37,7 +43,10 @@ function main()
       "material": "material4",
       "camera": sharedCamera
     };
-    seeds = displayStreamline(volume2, options4);
+    var s = start("Tornado1");
+    const [screenInfo4, seeds, reseed] = displayStreamline(volume2, options4);
+    stop(s, "Tornado1");
+
     var options6 = {
       "displayName": "display6",
       "X": "X6",
@@ -45,9 +54,12 @@ function main()
       "Z": "Z6",
       "addPoint": "addPoint6",
       "removePoints": "removePoints6",
+      "seedBtn": "seedPoints6",
       "camera": sharedCamera
     };
-    displayPoints(volume2, seeds, options6);
+    var s = start("Tornado2");
+    var screenInfo6 = displayPoints(volume2, seeds, reseed, options6);
+    stop(s, "Tornado2");
 
     /*
     var options5 = {
@@ -62,24 +74,30 @@ function main()
     };
     displaySlice(volume2, options5);
     */
+
+    var multiSceneScreen = new AKST.MultiSceneCanvas();
+    multiSceneScreen.addScene(screenInfo1);
+    multiSceneScreen.addScene(screenInfo2);
+    multiSceneScreen.addScene(screenInfo3);
+    multiSceneScreen.addScene(screenInfo4);
+    //multiSceneScreen.addScene(screenInfo5);
+    multiSceneScreen.addScene(screenInfo6);
+
+    multiSceneScreen.loop();
 }
 
 function displayVolume(volume, options) {
-  var screen = new KVS.THREEScreen();
-  screen.draw = function() {
-    screen.light.position.copy(screen.camera.position);
-    KVS.THREEScreen.prototype.draw.call(this);
-  };
-
   var display = document.getElementById(options["displayName"]);
 
+  var screen = new AKST.SceneInfo();
   screen.init(volume, {
       width: display.offsetWidth,
       height: display.offsetWidth,
-      targetDom: display,
-      enableAutoResize: false
+      elem: display,
+      resizeFunction: AKST.ModifiedClientRect(display,
+        () => { return display.offsetWidth; },
+        () => { return display.offsetWidth; })
   });
-
   screen.scene.add(Bounds(volume));
 
   var isovalueSlider;
@@ -103,10 +121,6 @@ function displayVolume(volume, options) {
   var surfaces = Isosurfaces(volume, isovalue, material, options["transfer_fucntion"]);
   screen.scene.add(surfaces);
 
-  window.addEventListener('resize', function() {
-      screen.resize( [display.offsetWidth, display.offsetWidth] );
-  });
-
   if (isovalueSlider !== undefined) {
     isovalueSlider.addEventListener('input', function() {
         isovalue = isovalueSlider.value;
@@ -125,23 +139,21 @@ function displayVolume(volume, options) {
     });
   }
 
-  screen.loop();
+  return screen;
 }
 
 function displaySlice(volume, options) {
-  var screen = new KVS.THREEScreen();
-  screen.draw = function() {
-    screen.light.position.copy(screen.camera.position);
-    KVS.THREEScreen.prototype.draw.call(this);
-  };
+  var screen = new AKST.SceneInfo();
 
   var display = document.getElementById(options["displayName"]);
 
   screen.init(volume, {
       width: display.offsetWidth,
       height: display.offsetWidth,
-      targetDom: display,
-      enableAutoResize: false
+      elem: display,
+      resizeFunction: AKST.ModifiedClientRect(display,
+        () => { return display.offsetWidth; },
+        () => { return display.offsetWidth; })
   });
 
   screen.scene.add(Bounds(volume));
@@ -217,8 +229,6 @@ function displaySlice(volume, options) {
     apply.addEventListener('click', rangeListener);
   }
 
-  screen.loop();
-
   function rangeListener() {
     x = xRange !== undefined ? xRange.value : x;
     y = yRange !== undefined ? yRange.value : y;
@@ -234,6 +244,8 @@ function displaySlice(volume, options) {
     surfaces = Slice(volume, point, normal);
     screen.scene.add(surfaces);
   }
+
+  return screen;
 }
 
 function getRange(options, name) {
@@ -277,15 +289,17 @@ function getMaterial(materialName) {
 }
 
 function displayStreamline(volume, options) {
-  var screen = new KVS.THREEScreen();
+  var screen = new AKST.SceneInfo();
 
   var display = document.getElementById(options["displayName"]);
 
   screen.init(volume, {
       width: display.offsetWidth,
       height: display.offsetWidth,
-      targetDom: display,
-      enableAutoResize: false,
+      elem: display,
+      resizeFunction: AKST.ModifiedClientRect(display,
+        () => { return display.offsetWidth; },
+        () => { return display.offsetWidth; }),
       camera: options["camera"]
   });
 
@@ -300,35 +314,39 @@ function displayStreamline(volume, options) {
     screen.scene.add(res[0][i]);
   }
 
-  window.addEventListener('resize', function() {
-      screen.resize( [display.offsetWidth, display.offsetWidth] );
-  });
+  return [screen, res[1], reseed];
 
-  document.addEventListener( 'mousemove', function() {
-      screen.light.position.copy( screen.camera.position );
-  });
-
-  screen.loop();
-
-  return res[1];
+  function reseed(seeds) {
+    for (var i = 0; i < res[0].length; i++) {
+      screen.scene.remove(res[0][i]);
+    }
+    res = AKST.Streamlines(volume, {"seeds": seeds});
+    for (var i = 0; i < res[0].length; i++) {
+      screen.scene.add(res[0][i]);
+    }
+    return res[1];
+  }
 }
 
-function displayPoints(volume, vertices, options) {
-  var screen = new KVS.THREEScreen();
+function displayPoints(volume, vertices, reseed, options) {
+  var screen = new AKST.SceneInfo();
 
   var display = document.getElementById(options["displayName"]);
 
   screen.init(volume, {
       width: display.offsetWidth,
       height: display.offsetWidth,
-      targetDom: display,
-      enableAutoResize: false,
+      elem: display,
+      resizeFunction: AKST.ModifiedClientRect(display,
+        () => { return display.offsetWidth; },
+        () => { return display.offsetWidth; }),
       camera: options["camera"]
   });
 
   screen.scene.add(Bounds(volume));
 
   var material = new THREE.PointsMaterial({size: 2, vertexColors: THREE.VertexColors});
+  material.sizeAttenuation = false;
   var geometry = new THREE.Geometry();
   geometry.vertices = vertices;
   for (var i=0; i < vertices.length; i++) {
@@ -349,10 +367,6 @@ function displayPoints(volume, vertices, options) {
 
   var points = new THREE.Points(geometry, material);
   screen.scene.add(points);
-
-  window.addEventListener('resize', function() {
-      screen.resize( [display.offsetWidth, display.offsetWidth] );
-  });
 
   var xRange = document.getElementById(options["X"]);
   var yRange = document.getElementById(options["Y"]);
@@ -375,16 +389,25 @@ function displayPoints(volume, vertices, options) {
     points.geometry.colors[addPointPos].r = color.r;
     points.geometry.colors[addPointPos].g = color.g;
     points.geometry.colors[addPointPos].b = color.b;
-    points.geometry.vertices.push(new THREE.Vector3(xRange.value, yRange.value, zRange.value));
-    points.geometry.colors.push(new THREE.Color("red"));
+
+    addPointPos++
+    addPoint = points.geometry.vertices[addPointPos];
+    addPoint.x = parseFloat(xRange.value);
+    addPoint.y = parseFloat(yRange.value);
+    addPoint.z = parseFloat(zRange.value);
+    points.geometry.vertices[addPointPos] = addPoint;
+    color = new THREE.Color("red");
+    points.geometry.colors[addPointPos].r = color.r;
+    points.geometry.colors[addPointPos].g = color.g;
+    points.geometry.colors[addPointPos].b = color.b;
+
     points.geometry.verticesNeedUpdate = true;
     points.geometry.colorsNeedUpdate = true;
-    addPointPos++;
   });
 
   var removePointsBtn = document.getElementById(options["removePoints"]);
   removePointsBtn.addEventListener("click", function() {
-    for (var i=0; i < geometry.vertices.length; i++) {
+    for (var i=0; i < points.geometry.vertices.length; i++) {
       points.geometry.vertices[i] = new THREE.Vector3(-1000,-1000,-1000);
       color = new THREE.Color("red");
       points.geometry.colors[i].r = color.r;
@@ -396,36 +419,59 @@ function displayPoints(volume, vertices, options) {
     }
   });
 
-  screen.loop();
+  var seedBtn = document.getElementById(options["seedBtn"]);
+  seedBtn.addEventListener("click", function() {
+    vertices = [];
+    for (var i=0; i < points.geometry.vertices.length; i++) {
+      vertice = points.geometry.vertices[i];
+      if (vertice.x == -1000 && vertice.y == -1000 && vertice.z == -1000) {
+        continue;
+      }
+      vertices.push(vertice);
+    }
+    reseed(vertices);
+  });
+
+  return screen;
 
   function rangeListener() {
     addPoint = points.geometry.vertices[addPointPos];
-    addPoint.x = xRange.value;
-    addPoint.y = yRange.value;
-    addPoint.z = zRange.value;
+    addPoint.x = parseFloat(xRange.value);
+    addPoint.y = parseFloat(yRange.value);
+    addPoint.z = parseFloat(zRange.value);
     points.geometry.vertices[addPointPos] = addPoint;
     points.geometry.verticesNeedUpdate = true;
   }
 }
 
 function displayArrows(volume, options) {
-  var screen = new KVS.THREEScreen();
+  var screen = new AKST.SceneInfo();
 
   var display = document.getElementById(options["displayName"]);
   screen.init(volume, {
       width: display.offsetWidth,
       height: display.offsetWidth,
-      targetDom: display,
-      enableAutoResize: false
+      elem: display,
+      resizeFunction: AKST.ModifiedClientRect(display,
+        () => { return display.offsetWidth; },
+        () => { return display.offsetWidth; })
   });
 
   screen.scene.add(Bounds(volume));
 
   Arrows(screen.scene, volume, 8);
 
-  window.addEventListener('resize', function() {
-      screen.resize( [display.offsetWidth, display.offsetWidth] );
-  });
+  return screen;
+}
 
-  screen.loop();
+function start(tag) {
+  console.log(`${tag} STARTED`)
+  var d = new Date();
+  return d.getTime();
+}
+
+function stop(start, tag) {
+  var d = new Date();
+  var took = d.getTime() - start;
+  console.log(`${tag} DONE: ${took} ms`);
 }

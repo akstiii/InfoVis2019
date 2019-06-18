@@ -1,11 +1,15 @@
+if (AKST === undefined) {
 var AKST = {
 }
+}
+
+
 AKST.Streamlines = function(volume, options) {
   var streamline = new AKST.Streamline();
-  streamline.setStepLength(0.1);
-  streamline.setTime(5000);
+  streamline.setStepLength(0.6);
+  streamline.setTime(1500);
   streamline.setMethod(AKST.RungeKutta4);
-  streamline.setLineWidth(5);
+  streamline.setLineWidth(2);
 
   var seeds = [];
   if (options["seeds"] !== undefined) {
